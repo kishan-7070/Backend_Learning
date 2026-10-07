@@ -1,0 +1,24 @@
+{
+  "name": "backend_starts",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prettier": "3.9.8"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dot-env": "^0.0.1",
+    "dotenv": "^18.0.4",
+    "express": "^5.2.1",
+    "mongoose": "^9.10.3"
+  }
+}
