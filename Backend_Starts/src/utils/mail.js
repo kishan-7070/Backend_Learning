@@ -2,7 +2,41 @@ import Mailgen from "mailgen";
 import nodemailer from "nodemailer";
 
 const sendEmail=async(options)=>{
-    
+    const mailGenerator=new Mailgen({
+        theme:"default",
+        product:{
+            name:"Task Manager",
+            link:"https://google.com"
+
+        }
+    })
+
+    const emailTextual=mailGenerator.generatePlaintext(options.mailgenContent);
+    const emailTextualHTML=mailGenerator.generate(options.mailgenContent)
+
+
+    const transporter=nodemailer.createTransport({
+        host:proccess.env.MAILTRAP_SMTP_HOST,
+        port:proccess.env.MAILTRAP_SMTP_PORT,
+        auth:{
+            user:proccess.env.MAILTRAP_SMTP_USER,
+            pass:proccess.env.MAILTRAP_SMTP_PASS
+        }
+    })
+
+    const mail={
+        from:"mail.taskmanager@email.com",
+        to:options.email,
+        subject:options.subject,
+        text:emailTextual,
+        html:emailTextualHTML
+    }
+    try{
+        await transporter.sendMail(mail)
+    }catch(error){
+        console.error("Email service failed silently Make sure about credentials or mail trap credentials");
+        console.error(error);
+    }
 }
 
 const emailVerificationMailgenContent=(username,
@@ -36,7 +70,7 @@ const forgotPasswordMailgenContent=(username,
                 instructions: "To reset your account please proceed",
                 button:{
                     color:"#22BC66",
-                    text: "Verify your email",
+                    text: "Reset Button",
                     link: PasswordResetUrl
                 }
             },
@@ -45,4 +79,4 @@ const forgotPasswordMailgenContent=(username,
     }
 };
 
-export {emailVerificationMailgenContent,forgotPasswordMailgenContent};
+export {emailVerificationMailgenContent,forgotPasswordMailgenContent,sendEmail};
